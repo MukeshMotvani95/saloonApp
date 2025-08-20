@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: saloon-app
+    env: java
+    plan: free
+    region: frankfurt   # or choose: frankfurt / singapore
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+      - key: SPRING_DATASOURCE_USERNAME
+        value: ${DATABASE_USER}
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: ${DATABASE_PASSWORD}
+
+databases:
+  - name: saloon-db
+    plan: free
+    region: oregon
+    databaseName: saloon
+    user: saloon_user
